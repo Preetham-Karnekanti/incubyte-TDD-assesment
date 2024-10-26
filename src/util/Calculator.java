@@ -13,6 +13,14 @@ public class Calculator {
         if (numbers.isBlank()) {
             return 0;
         }
+        String[] parsedNumbers = getParsedNumbers(numbers);
+        List<Integer> negativeNumbers = Arrays.stream(parsedNumbers).map(String::strip).mapToInt(Integer::parseInt).filter(x -> x < 0).boxed().toList();
+        if (!negativeNumbers.isEmpty())
+            throw new NegativeNumberException("negative numbers are not allowed: " + negativeNumbers);
+        return Arrays.stream(parsedNumbers).map(String::strip).mapToInt(Integer::parseInt).sum();
+    }
+
+    private String[] getParsedNumbers(String numbers) {
         String delimiter = DEFAULT_DELIMiTER;
         String numberString = numbers;
         if (numbers.startsWith("//")) {
@@ -22,10 +30,6 @@ public class Calculator {
                 throw new IllegalArgumentException("should contain only 1 custom delimiter");
             numberString = numbers.substring(delimiterIndex + 1);
         }
-        String[] parsedNumbers = numberString.split(delimiter);
-        List<Integer> negativeNumbers = Arrays.stream(parsedNumbers).map(String::strip).mapToInt(Integer::parseInt).filter(x -> x < 0).boxed().toList();
-        if (!negativeNumbers.isEmpty())
-            throw new NegativeNumberException("negative numbers are not allowed: " + negativeNumbers);
-        return Arrays.stream(parsedNumbers).map(String::strip).mapToInt(Integer::parseInt).sum();
+        return numberString.split(delimiter);
     }
 }
