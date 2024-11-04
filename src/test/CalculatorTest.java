@@ -52,6 +52,11 @@ public class CalculatorTest {
     }
 
     @Test
+    public void shouldMultiplyGivenWhenDelimiterIsAstrek() throws NegativeNumberException{
+        assertEquals(6000, calculator.add("//*\n10*20*30"));
+    }
+
+    @Test
     public void shouldThrowExceptionWhenNegativeAreGiven() {
         Exception exception = assertThrows(NegativeNumberException.class, () ->
                 calculator.add("1,2,-3,-4")
